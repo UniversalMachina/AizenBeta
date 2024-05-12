@@ -7,8 +7,10 @@ import {
 } from 'react-router-dom';
 import QuestionPage from './QuestionPage';
 import Review from './Review';
-import Websocketpage from './webpage';
-import Loading from './Loading';
+import Upload from './Upload';
+import UploadGraphics from './UploadGraphics';
+// import Websocketpage from './webpage';
+// import Loading from './Loading';
 function App() {
   return (
     <Router>
@@ -28,8 +30,10 @@ function App() {
 <Route path="/question10" element={<QuestionPage questionId={10} />} />
 <Route path="/question11" element={<QuestionPage questionId={11} />} />
 <Route path="/question12" element={<QuestionPage questionId={12} />} />
+{/* <Route path="/upload" element={<Upload/>} /> */}
+<Route path="/upload" element={<UploadGraphics/>} />
 
-          <Route path="/review" element={<Loading />} />
+          <Route path="/review" element={<Review />} />
         </Routes>
       </div>
     </Router>
