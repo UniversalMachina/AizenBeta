@@ -10,7 +10,8 @@ import Review from './Review';
 import Upload from './Upload';
 import UploadGraphics from './UploadGraphics';
 // import Websocketpage from './webpage';
-// import Loading from './Loading';
+import Loading from './Loading';
+import Integratewebpage from './Integratewebpage';
 function App() {
   return (
     <Router>
@@ -31,9 +32,9 @@ function App() {
 <Route path="/question11" element={<QuestionPage questionId={11} />} />
 <Route path="/question12" element={<QuestionPage questionId={12} />} />
 {/* <Route path="/upload" element={<Upload/>} /> */}
-<Route path="/upload" element={<UploadGraphics/>} />
-
-          <Route path="/review" element={<Review />} />
+{/* <Route path="/upload" element={<UploadGraphics/>} /> */}
+<Route path="/loading" element={<Integratewebpage/>}/>
+          {/* <Route path="/review" element={<Review />} /> */}
         </Routes>
       </div>
     </Router>

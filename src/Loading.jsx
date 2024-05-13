@@ -3,39 +3,47 @@ import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 import LoadingAnimation from "./LoadingAnimation";
 
-const socket = io('http://localhost:5000');
 
 function Loading() {
   const [loadingStatus, setLoadingStatus] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const navigate = useNavigate();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    socket.on('loading_status', data => {
+    // Initialize the socket connection
+    const newSocket = io('http://localhost:5000');
+    setSocket(newSocket);
+
+    newSocket.on('loading_status', (data) => {
       setLoadingStatus(data.status);
     });
 
-    socket.on('complete', () => {
+    newSocket.on('complete', () => {
       setIsComplete(true);
     });
 
+    // Clean up the socket when the component unmounts
     return () => {
-      socket.off('loading_status');
-      socket.off('complete');
+      newSocket.off('loading_status');
+      newSocket.off('complete');
+      newSocket.disconnect();
     };
   }, []);
 
   useEffect(() => {
-    if (isComplete) {
-      socket.disconnect();
+    if (isComplete && socket) {
       navigate("/next-page");
     }
-  }, [isComplete, navigate]);
+  }, [isComplete, navigate, socket]);
 
   const startLoading = () => {
-    setLoadingStatus('Loading part 1');
-    socket.emit('start_loading');
+    if (socket) {
+      setLoadingStatus('Loading part 1');
+      socket.emit('start_loading');
+    }
   };
+
 
   return (
     <div className="w-full relative bg-gray-100 overflow-hidden flex flex-col items-start justify-center pt-0 pb-[190.5px] pr-[119px] pl-20 box-border gap-[40px] min-h-[1080px] leading-[normal] tracking-[normal] mq700:gap-[20px] mq700:pr-[29px] mq700:box-border mq975:pl-10 mq975:pr-[59px] mq975:box-border">

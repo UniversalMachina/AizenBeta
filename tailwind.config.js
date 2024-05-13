@@ -26,6 +26,7 @@ module.exports = {
       fontFamily: {
         "league-spartan": "'League Spartan'",
         "lexend-deca": "'Lexend Deca'",
+        'roboto': ['Roboto', 'sans-serif'] // Adding Roboto with a fallback to sans-serif
       },
       borderRadius: {
         "101xl": "120px",

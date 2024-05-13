@@ -6,7 +6,6 @@ function Upload() {
   const [text, setText] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
   const [fileContents, setFileContents] = useState({});
-  const [selectedFile, setSelectedFile] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,9 +19,7 @@ function Upload() {
     }
   };
 
-  const handleFileClick = (file) => {
-    setSelectedFile(file);
-  };
+
 
   return (
     <div>
@@ -45,12 +42,7 @@ function Upload() {
       )}
       <div>
         <h2>File Contents:</h2>
-        {/* {Object.keys(fileContents).map((file) => (
-          <button key={file} onClick={() => handleFileClick(file)}>
-            {file}
-          </button>
-        ))}
-        {selectedFile && <pre>{fileContents[selectedFile]}</pre>} */}
+
       
       <TextEditor fileContents={fileContents}/>
       </div>
