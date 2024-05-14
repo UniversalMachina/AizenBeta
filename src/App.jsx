@@ -12,6 +12,8 @@ import UploadGraphics from './UploadGraphics';
 // import Websocketpage from './webpage';
 import Loading from './Loading';
 import Integratewebpage from './Integratewebpage';
+import NextPage from './NextPage';
+
 function App() {
   return (
     <Router>
@@ -31,9 +33,13 @@ function App() {
 <Route path="/question10" element={<QuestionPage questionId={10} />} />
 <Route path="/question11" element={<QuestionPage questionId={11} />} />
 <Route path="/question12" element={<QuestionPage questionId={12} />} />
+<Route path="/loading" element={<Loading/>}/>
 {/* <Route path="/upload" element={<Upload/>} /> */}
-{/* <Route path="/upload" element={<UploadGraphics/>} /> */}
-<Route path="/loading" element={<Integratewebpage/>}/>
+<Route path="/upload" element={<UploadGraphics/>} />
+{/* <Route path="/integratewebpage" element={<Integratewebpage/>}/> */}
+
+{/* <Route path="/next-page" element={<NextPage />} /> */}
+
           {/* <Route path="/review" element={<Review />} /> */}
         </Routes>
       </div>

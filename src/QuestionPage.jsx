@@ -83,7 +83,7 @@ function QuestionPage({ questionId }) {
 
   const handleNext = () => {
     sessionStorage.setItem(`question${questionId}`, answer);
-    const nextPage = questionId < 12 ? `/question${questionId + 1}` : "/review";
+    const nextPage = questionId < 12 ? `/question${questionId + 1}` : "/loading";
     navigate(nextPage);
   };
 

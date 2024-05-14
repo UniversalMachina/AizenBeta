@@ -41,7 +41,7 @@ const renderTabs = () => {
     <div className="flex justify-center">
 
 
-<div className="w-1/2 bg-[#202020] h-[800px] overflow-y-auto shadow-lg justify-center">
+<div className="w-1/2 scrollbar-hide bg-[#202020] h-[700px] overflow-y-auto shadow-lg justify-center">
   {Object.keys(fileContents).map((file) => (
     <div
       key={file}

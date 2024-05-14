@@ -9,6 +9,7 @@ function Loading() {
   const [isComplete, setIsComplete] = useState(false);
   const navigate = useNavigate();
   const [socket, setSocket] = useState(null);
+  const [processedData, setProcessedData] = useState(null); // State to store processed data
 
   useEffect(() => {
     // Initialize the socket connection
@@ -19,10 +20,39 @@ function Loading() {
       setLoadingStatus(data.status);
     });
 
-    newSocket.on('complete', () => {
+    newSocket.on('complete', (data) => {
+      console.log(data.message); // Logging the message from the backend
+      setProcessedData(data.data); // Storing the data from the backend
       setIsComplete(true);
     });
 
+
+    // if (socket) {
+    //   setLoadingStatus('Loading part 1');
+    //   newSocket.emit('start_loading');
+    // }
+
+
+    newSocket.on('connect', () => {
+      // Send data right after socket is connected
+      newSocket.emit('start_loading', {
+        questions: {
+          "1": sessionStorage.getItem('question1'),
+          "2": sessionStorage.getItem('question2'),
+          "3": sessionStorage.getItem('question3'),
+          "4": sessionStorage.getItem('question4'),
+          "5": sessionStorage.getItem('question5'),
+          "6": sessionStorage.getItem('question6'),
+          "7": sessionStorage.getItem('question7'),
+          "8": sessionStorage.getItem('question8'),
+          "9": sessionStorage.getItem('question9'),
+          "10": sessionStorage.getItem('question10'),
+          "11": sessionStorage.getItem('question11'),
+          "12": sessionStorage.getItem('question12')
+        }
+      });
+      setLoadingStatus('Data submitted, waiting for response...');
+    });
     // Clean up the socket when the component unmounts
     return () => {
       newSocket.off('loading_status');
@@ -33,9 +63,12 @@ function Loading() {
 
   useEffect(() => {
     if (isComplete && socket) {
-      navigate("/next-page");
+      navigate("/upload", { state: { data: processedData } }); // Passing data through navigate
     }
-  }, [isComplete, navigate, socket]);
+  }, [isComplete, navigate, socket, processedData]);
+
+
+
 
   const startLoading = () => {
     if (socket) {
