@@ -14,6 +14,7 @@ function Loading() {
   useEffect(() => {
     // Initialize the socket connection
     const newSocket = io('http://localhost:5000');
+    // const newSocket = io('http://TestBeta.eba-sfmj6myw.us-east-1.elasticbeanstalk.com');
     setSocket(newSocket);
 
     newSocket.on('loading_status', (data) => {
@@ -94,7 +95,7 @@ function Loading() {
         {!isComplete ? (
           <>
             <LoadingAnimation />
-            <button onClick={startLoading} disabled={loadingStatus !== ''}>Start Loading</button>
+            {/* <button onClick={startLoading} disabled={loadingStatus !== ''}>Start Loading</button> */}
           </>
         ) : null}
       </section>
