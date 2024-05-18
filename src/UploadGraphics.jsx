@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import TextEditor from './TextEditor';
 import { useLocation } from 'react-router-dom';
 
 
@@ -11,27 +10,11 @@ function UploadGraphics() {
   const location = useLocation();
   const { data } = location.state || { data: 'No data received' }; // Extracting data passed via state
 
-  const [text, setText] = useState('');
   const [downloadLink, setDownloadLink] = useState('');
-  const [fileContents, setFileContents] = useState({});
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     // Adjusted to send text properly and expecting the adjusted response structure
-  //     const response = await axios.post('http://localhost:5000/process-text', { text: text });
-  //     setDownloadLink(response.data.downloadLink);
-  //     setFileContents(response.data.fileContents);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
 
   useEffect(() => {
     if (data) {
       setDownloadLink(data.downloadLink);
-      setFileContents(data.fileContents);
     }
   }, [data]);
 
@@ -49,38 +32,15 @@ function UploadGraphics() {
       </div>
   
   
-      {/* <form onSubmit={handleSubmit} className='z-[20]'>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter your text here"
-        ></textarea>
-        <button type="submit">Convert to ZIP</button>
-      </form> */}
-
-  
   
   
   
 
 
-      {/* <section className="self-stretch rounded-3xl bg-gray-400 overflow-hidden flex flex-row items-center justify-start py-[58px] pr-0 pl-[26px] box-border max-w-full z-[1] text-center text-21xl text-solid-white font-league-spartan mq700:pt-[122px] mq700:pb-[122px] mq700:box-border">
-      <div className="flex-1 flex flex-col items-center justify-center max-w-full">
-        <div className="self-stretch flex flex-col items-center justify-center gap-[16px]">
- 
+      <section className="self-stretch rounded-3xl bg-gray-400 overflow-hidden flex flex-row items-center justify-start py-[280px] pr-0 pl-[26px] box-border max-w-full z-[1] text-center text-21xl text-solid-white font-league-spartan mq700:pt-[122px] mq700:pb-[122px] mq700:box-border">
 
+    </section>
 
-        </div>
-
-
-      </div>
-    </section> */}
-        <div className="pt-[50px] self-stretch flex flex-col items-center justify-center gap-[16px] z-[12]">
- 
-
-
-<TextEditor fileContents={fileContents}/>
- </div>
 
     <div className="w-[145px] rounded-101xl bg-blueviolet flex flex-col items-start justify-start py-4 pr-5 pl-6 box-border whitespace-nowrap text-white font-league-spartan">
     <a href={downloadLink} download="converted.zip" target="_blank" rel="noopener noreferrer" className="relative inline-block min-w-[97px] text-white font-bold no-underline">            Download ZIP

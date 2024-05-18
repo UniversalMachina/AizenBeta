@@ -6,78 +6,72 @@ import LoadingAnimation from "./LoadingAnimation";
 
 function Loading() {
   const [loadingStatus, setLoadingStatus] = useState('');
+  const [processedData, setProcessedData] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const navigate = useNavigate();
-  const [socket, setSocket] = useState(null);
-  const [processedData, setProcessedData] = useState(null); // State to store processed data
 
   useEffect(() => {
-    // Initialize the socket connection
-    const newSocket = io('http://localhost:5000');
-    // const newSocket = io('http://TestBeta.eba-sfmj6myw.us-east-1.elasticbeanstalk.com');
-    setSocket(newSocket);
+    const startLoading = async () => {
+        try {
+            setLoadingStatus('Data submitted, waiting for response...');
+            
+            // Send data via POST request
+            const response = await fetch('http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/start_loading', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    questions: {
+                        "1": sessionStorage.getItem('question1'),
+                        "2": sessionStorage.getItem('question2'),
+                        "3": sessionStorage.getItem('question3'),
+                        "4": sessionStorage.getItem('question4'),
+                        "5": sessionStorage.getItem('question5'),
+                        "6": sessionStorage.getItem('question6'),
+                        "7": sessionStorage.getItem('question7'),
+                        "8": sessionStorage.getItem('question8'),
+                        "9": sessionStorage.getItem('question9'),
+                        "10": sessionStorage.getItem('question10'),
+                        "11": sessionStorage.getItem('question11'),
+                        "12": sessionStorage.getItem('question12')
+                    }
+                }),
+            });
 
-    newSocket.on('loading_status', (data) => {
-      setLoadingStatus(data.status);
-    });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-    newSocket.on('complete', (data) => {
-      console.log(data.message); // Logging the message from the backend
-      setProcessedData(data.data); // Storing the data from the backend
-      setIsComplete(true);
-    });
+            // Start polling for status
+            const pollStatus = setInterval(async () => {
+                const statusResponse = await fetch('http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/check_status');
+                const statusData = await statusResponse.json();
+                setLoadingStatus(statusData.status);
 
-
-    // if (socket) {
-    //   setLoadingStatus('Loading part 1');
-    //   newSocket.emit('start_loading');
-    // }
-
-
-    newSocket.on('connect', () => {
-      // Send data right after socket is connected
-      newSocket.emit('start_loading', {
-        questions: {
-          "1": sessionStorage.getItem('question1'),
-          "2": sessionStorage.getItem('question2'),
-          "3": sessionStorage.getItem('question3'),
-          "4": sessionStorage.getItem('question4'),
-          "5": sessionStorage.getItem('question5'),
-          "6": sessionStorage.getItem('question6'),
-          "7": sessionStorage.getItem('question7'),
-          "8": sessionStorage.getItem('question8'),
-          "9": sessionStorage.getItem('question9'),
-          "10": sessionStorage.getItem('question10'),
-          "11": sessionStorage.getItem('question11'),
-          "12": sessionStorage.getItem('question12')
+                if (statusData.status === 'Complete' && statusData.complete) {
+                    clearInterval(pollStatus);
+                    console.log(statusData.complete.message); // Logging the message from the backend
+                    setProcessedData(statusData.complete.data); // Storing the data from the backend
+                    setIsComplete(true);
+                }
+            }, 2000); // Poll every 2 seconds
+        } catch (error) {
+            console.error('Error:', error);
         }
-      });
-      setLoadingStatus('Data submitted, waiting for response...');
-    });
-    // Clean up the socket when the component unmounts
-    return () => {
-      newSocket.off('loading_status');
-      newSocket.off('complete');
-      newSocket.disconnect();
     };
-  }, []);
+
+    startLoading();
+}, []);
+
+
+
 
   useEffect(() => {
-    if (isComplete && socket) {
+    if (isComplete) {
       navigate("/upload", { state: { data: processedData } }); // Passing data through navigate
     }
-  }, [isComplete, navigate, socket, processedData]);
-
-
-
-
-  const startLoading = () => {
-    if (socket) {
-      setLoadingStatus('Loading part 1');
-      socket.emit('start_loading');
-    }
-  };
-
+  }, [isComplete, navigate, processedData]);
 
   return (
     <div className="w-full relative bg-gray-100 overflow-hidden flex flex-col items-start justify-center pt-0 pb-[190.5px] pr-[119px] pl-20 box-border gap-[40px] min-h-[1080px] leading-[normal] tracking-[normal] mq700:gap-[20px] mq700:pr-[29px] mq700:box-border mq975:pl-10 mq975:pr-[59px] mq975:box-border">
