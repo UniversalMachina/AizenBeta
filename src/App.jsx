@@ -1,13 +1,48 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import QuestionPage from "./QuestionPage";
+import { useEffect, useState } from "react";
 
-import UploadGraphics from "./UploadGraphics";
-import Loading from "./Loading";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigationType,
+  useLocation,
+} from "react-router-dom";
+import QuestionPage from "./pages/QuestionPage";
+import UploadGraphics from "./pages/UploadGraphics";
+import Loading from "./pages/Loading";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
 
 function App() {
+
+  // const location = useLocation();
+  // const pathname = location.pathname;
+
+  const [isLoggedIn, setLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || ""
+  );
+
+  const handleLogin = (status, username) => {
+    setLoggedIn(status);
+    setUsername(username); // Set the username
+    localStorage.setItem("isLoggedIn", status.toString());
+    localStorage.setItem("username", username); // Store the username in localStorage
+  };
+
+  const handleSignOut = () => {
+    setLoggedIn(false);
+    setUsername(""); // Clear the username
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username"); // Remove the username from localStorage
+  };
+
   return (
     <Router>
+
       <div>
         <Routes>
           <Route path="/" element={<QuestionPage questionId={1} />} />
@@ -31,11 +66,16 @@ function App() {
             path="/question12"
             element={<QuestionPage questionId={12} />}
           />
-          <Route path="/loading" element={<Loading />} />
-          <Route path="/upload" element={<UploadGraphics />} />
+          <Route path="/loading" element={<Loading username={username}/>} />
+          <Route path="/upload" element={<UploadGraphics/>} />
+
+
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/register" element={<Register onLogin={handleLogin} />} />
         </Routes>
       </div>
-    </Router>
+      </Router>
+
   );
 }
 
