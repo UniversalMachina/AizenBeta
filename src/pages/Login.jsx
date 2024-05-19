@@ -15,13 +15,13 @@ const Login = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post('http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/login', {
         username,
         password,
       });
 
       console.log('Login successful', response.data);
-      onLogin(true, response.data.username);
+      onLogin(true, username);
       navigate('/'); // Redirect to the home page after login
     } catch (err) {
       console.error('Login failed', err.response.data);

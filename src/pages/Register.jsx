@@ -17,7 +17,7 @@ const Register = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:5000/register', {
+      const response = await axios.post('http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/register', {
         username,
         password,
       });

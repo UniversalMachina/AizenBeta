@@ -53,7 +53,7 @@ const Back = ({ questionId, handleNext, answer, setAnswer }) => {
           <div className="w-full max-w-[272px] rounded-101xl bg-gray-300 box-border flex flex-col items-start justify-center py-3.5 px-4 shrink-0 border-[1px] border-solid border-solid-white">
             <input
               className="w-full [border:none] [outline:none] font-league-spartan text-base bg-[transparent] h-[15px] relative text-solid-white text-left inline-block p-0"
-              placeholder="AirBNB"
+              placeholder="Answer"
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}

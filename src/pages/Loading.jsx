@@ -15,16 +15,17 @@ function Loading({username}) {
         setLoadingStatus("Data submitted, waiting for response...");
 
         // Send data via POST request
-        const response = await fetch('http://localhost:5000/start_loading', {
+        // const response = await fetch('http://localhost:5000/start_loading', {
 
-        // const response = await fetch(
-        //   "http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/start_loading",
-        //   {
+        const response = await fetch(
+          "http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/start_loading",
+          {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              username: username, // Pass username
               questions: {
                 1: sessionStorage.getItem("question1"),
                 2: sessionStorage.getItem("question2"),
@@ -49,11 +50,11 @@ function Loading({username}) {
 
         // Start polling for status
         const pollStatus = setInterval(async () => {
-          const statusResponse = await fetch('http://localhost:5000/check_status');
+          // const statusResponse = await fetch(`http://localhost:5000/check_status?username=${username}`);
 
-          // const statusResponse = await fetch(
-          //   "http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/check_status"
-          // );
+          const statusResponse = await fetch(
+            `http://AizenTestLaunch-env.eba-cp72myue.us-east-1.elasticbeanstalk.com/check_status?username=${username}`
+          );
           const statusData = await statusResponse.json();
           setLoadingStatus(statusData.status);
 
